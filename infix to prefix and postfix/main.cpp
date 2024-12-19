@@ -168,28 +168,28 @@ int postfixAnswer(string postfix){
     return stack.top();
 }
 
-
 float postfixAnswerVar(string postfix ,float x) {
     float num ;
     stack<float> stack;
     for (int i = 0; i < postfix.size(); ++i) {
         if (isspace(postfix[i])) continue;
         if ( postfix[i] == '~' || isalpha(postfix[i]) || isdigit(postfix[i])) {
-            if(isdigit(postfix[i])){
+            if(isdigit(postfix[i]) || postfix[i] == '~'){
                 string numberStr;
-                while (i< postfix.size() && (isdigit(postfix[i]) || postfix[i] == '.')){
-                    numberStr += postfix[i];
-                    i++;
+                while (i< postfix.size() && (isdigit(postfix[i]) || postfix[i] == '.' || postfix[i] == '~')) {
+                    if (postfix[i] == '~') {
+                        numberStr += '-';
+                        i++;
+                    } else {
+                        numberStr += postfix[i];
+                        i++;
+                    }
                 }
                 num = stof(numberStr);
                 stack.push(num);
                 i--;
             }else if((isalpha(postfix[i]))) {
                 num = x;
-                stack.push(num);
-            }else if (postfix[i] == '~') {
-                num = stack.top()*-1;
-                stack.pop();
                 stack.push(num);
             }
         }else if(isOperator(postfix[i])) {
@@ -203,7 +203,6 @@ float postfixAnswerVar(string postfix ,float x) {
     }
     return stack.top();
 }
-
 
 
 
